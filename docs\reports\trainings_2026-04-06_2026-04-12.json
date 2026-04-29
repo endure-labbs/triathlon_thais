@@ -1,0 +1,74 @@
+[
+  {
+    "external_id": "2026-04-06-bike-ss-ftp",
+    "category": "WORKOUT",
+    "start_date_local": "2026-04-06T07:00:00",
+    "type": "Ride",
+    "name": "Bike - Sweet Spot",
+    "description": "Aquecimento\n- 10m ramp Z1-Z2\n\nSweet Spot 3x\n- 8m 88-93%\n- 4m Z1\n\nCooldown\n- 10m Z1\n\nFoco: sustentar potência constante nos blocos SS. Faltam 26 dias para Santos.\n\nBy Claude"
+  },
+  {
+    "external_id": "",
+    "category": "WORKOUT",
+    "start_date_local": "2026-04-07T00:00:00",
+    "type": "Run",
+    "name": "Run - Z2 Base",
+    "description": "- 45m Z2 Pace"
+  },
+  {
+    "external_id": "2026-04-07-forca-full",
+    "category": "WORKOUT",
+    "start_date_local": "2026-04-07T18:00:00",
+    "type": "WeightTraining",
+    "name": "Força - Full Body",
+    "description": "Força funcional completa para triathlon.\n\nAgachamento, estocada, deadlift leve, elevação lateral, remada, prancha.\n2-3 séries de 12-15 rep por exercício.\nRitmo controlado, foco em estabilidade.\n\nBy Claude"
+  },
+  {
+    "external_id": "2026-04-08-swim-volume",
+    "category": "WORKOUT",
+    "start_date_local": "2026-04-08T07:00:00",
+    "type": "Swim",
+    "name": "Swim - Volume Base",
+    "description": "Aquecimento\n- 400mtr Z1 Pace\n\nSerie Principal 6x\n- 100mtr Z2 Pace\n- 20s Z1 Pace\n\nSerie Continua\n- 400mtr Z2 Pace\n\nCooldown\n- 200mtr Z1 Pace\n\nTotal: ~1800mtr. Foco: ritmo sustentado, sem parar para descansar muito.\n\nBy Claude"
+  },
+  {
+    "external_id": "2026-04-09-run-tiros-z4",
+    "category": "WORKOUT",
+    "start_date_local": "2026-04-09T06:30:00",
+    "type": "Run",
+    "name": "Run - Tiros Z4 Threshold",
+    "description": "Aquecimento\n- 10m Z1 Pace\n\nTiros 5x\n- 4m Z4 Pace\n- 2m Z1 Pace\n\nCooldown\n- 10m Z1 Pace\n\nFoco: manter ritmo constante nos tiros. Pace alvo ~5:00-5:20/km. Não destruir.\n\nBy Claude"
+  },
+  {
+    "external_id": "2026-04-09-forca-inferior",
+    "category": "WORKOUT",
+    "start_date_local": "2026-04-09T18:00:00",
+    "type": "WeightTraining",
+    "name": "Força - Inferior + Core",
+    "description": "Foco em membros inferiores e core para triathlon.\n\nAgachamento unilateral, step-up, ponte de glúteos, panturrilha, prancha lateral, dead bug.\n2-3 séries. Controle e estabilidade.\n\nBy Claude"
+  },
+  {
+    "external_id": "2026-04-10-swim-tecnica",
+    "category": "WORKOUT",
+    "start_date_local": "2026-04-10T07:00:00",
+    "type": "Swim",
+    "name": "Swim - Técnica + Pullbuoy",
+    "description": "Aquecimento\n- 200mtr Z1 Pace\n\nSerie Tecnica 4x\n- 50mtr Z1 Pace\n- 15s Z1 Pace\n\nPullbuoy\n- 400mtr Z2 Pace\n\nCooldown\n- 200mtr Z1 Pace\n\nFoco: qualidade do nado com pullbuoy. Sentir propulsão dos braços.\n\nBy Claude"
+  },
+  {
+    "external_id": "2026-04-11-t2-brick-especifico",
+    "category": "WORKOUT",
+    "start_date_local": "2026-04-11T07:30:00",
+    "type": "Ride",
+    "name": "T2 - Brick Específico Sprint",
+    "description": "BIKE\n- 10m ramp Z1-Z2\n- 40m Z2\n- 15m 88-93%\n- 5m Z1\n\nTransição rápida (até 3min) — simulação de prova!\n\nRUN pós-bike\n- 20m Z2 Pace\n\nFoco: transição rápida e controlar ritmo de saída da corrida. Perna pesada é normal.\n\nBy Claude"
+  },
+  {
+    "external_id": "2026-04-12-run-longo-z2",
+    "category": "WORKOUT",
+    "start_date_local": "2026-04-12T07:30:00",
+    "type": "Run",
+    "name": "Run - Longão Z2",
+    "description": "Aquecimento\n- 5m Z1 Pace\n\nLongão\n- 60m Z2 Pace\n\nCooldown\n- 5m Z1 Pace\n\nPace alvo: 6:10-6:30/km. Controle de FC em Z2. Se calor alto, priorizar FC sobre pace.\n\nBy Claude"
+  }
+]

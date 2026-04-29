@@ -1,0 +1,118 @@
+﻿name: weekly-export
+
+on:
+  schedule:
+    - cron: "0 17 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      INTERVALS_API_KEY: ${{ secrets.INTERVALS_API_KEY }}
+      INTERVALS_ATHLETE_ID: ${{ secrets.INTERVALS_ATHLETE_ID }}
+      AUTO_UPLOAD: "true"
+      SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_FROM: ${{ secrets.SMTP_FROM }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Intervals API key
+        shell: pwsh
+        run: |
+          if (-not $env:INTERVALS_API_KEY) { throw "Missing INTERVALS_API_KEY secret." }
+
+      - name: Export Intervals reports
+        shell: pwsh
+        run: |
+          ./export-intervals-week-com-notas.ps1 -AthleteId $env:INTERVALS_ATHLETE_ID
+          ./intervals-longterm-coach-edition.ps1 -WeeksBack 12 -AthleteId $env:INTERVALS_ATHLETE_ID
+
+      - name: Weekly analysis + plan
+        shell: pwsh
+        run: |
+          ./weekly-analysis.ps1
+
+      - name: Upload trainings to Intervals
+        if: env.AUTO_UPLOAD == 'true'
+        shell: pwsh
+        run: |
+          ./upload_training.ps1
+
+      - name: Build static site
+        shell: pwsh
+        run: |
+          ./scripts/build_site.ps1
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Commit reports and site
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add Relatorios_Intervals docs
+          git commit -m "Weekly report" || echo "No changes to commit"
+          git push
+
+      - name: Send notification email
+        uses: dawidd6/action-send-mail@v4
+        if: ${{ success() && env.SMTP_SERVER != '' }}
+        with:
+          server_address: ${{ env.SMTP_SERVER }}
+          server_port: ${{ env.SMTP_PORT }}
+          username: ${{ env.SMTP_USERNAME }}
+          password: ${{ env.SMTP_PASSWORD }}
+          subject: "Thais, seu relatório semanal está pronto ✅"
+          to: "thaisalourencofreitas@gmail.com"
+          from: ${{ env.SMTP_FROM }}
+          secure: true
+          body: |
+            Olá, Thais!
+
+            Parabéns pela consistência da semana! Seu relatório já está disponível:
+            ${{ steps.deployment.outputs.page_url }}
+
+            Qualquer dúvida, é só falar com a gente.
+            — Coach
+          html_body: |
+            <div style="background:#0b1022;padding:32px 16px;font-family:Arial,Helvetica,sans-serif;color:#e5e7eb;">
+              <div style="max-width:620px;margin:0 auto;background:linear-gradient(135deg,#5f6ddf 0%,#8f6ccf 60%,#d17ca8 100%);border-radius:18px;padding:22px;">
+                <h1 style="margin:0 0 8px 0;font-size:20px;">Relatório de Coaching • Thais</h1>
+                <p style="margin:0;color:#f1f5f9;">Seu resumo semanal está pronto.</p>
+              </div>
+              <div style="max-width:620px;margin:16px auto;background:#121a33;border-radius:16px;padding:20px;border:1px solid rgba(148,163,184,0.15);">
+                <h2 style="margin:0 0 8px 0;font-size:16px;">Parabéns pela semana! 💪</h2>
+                <p style="margin:0 0 16px 0;color:#cbd5f5;line-height:1.5;">
+                  Excelente consistência nos treinos. Mantivemos o foco no que importa agora:
+                  base sólida, técnica e progressão segura.
+                </p>
+                <a href="${{ steps.deployment.outputs.page_url }}" style="display:inline-block;background:#0b1022;color:#e5e7eb;text-decoration:none;padding:10px 16px;border-radius:999px;border:1px solid rgba(148,163,184,0.3);font-weight:600;">
+                  Abrir relatório semanal
+                </a>
+              </div>
+              <div style="max-width:620px;margin:12px auto 0 auto;color:#94a3b8;font-size:12px;">
+                Status: ${{ job.status }} · Atualizado automaticamente via GitHub Actions
+              </div>
+            </div>
