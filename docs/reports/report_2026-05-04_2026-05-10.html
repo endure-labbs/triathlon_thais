@@ -157,12 +157,12 @@ details[open] .caret{transform:rotate(45deg)}
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
       
       
-      <div class="hero-pill" style="background:rgba(0,0,0,0.3);font-size:12px">Endure.LabbS | 17/05/2026, 17:01:51</div>
+      <div class="hero-pill" style="background:rgba(0,0,0,0.3);font-size:12px">Endure.LabbS | 17/05/2026, 17:13:56</div>
     </div>
   </div>
   
   <nav class="quick-nav card section" aria-label="Navegacao de secoes do relatorio">
-    <a href="#resumo-semana" class="quick-link">Resumo</a><a href="#performance-semana" class="quick-link">Performance</a><a href="#wellness-semana" class="quick-link">Wellness</a><a href="#feedback-coach" class="quick-link">Feedback</a><a href="#calendario-provas" class="quick-link">Provas</a><a href="#endurance-semana" class="quick-link">Endurance</a><a href="#recomendacoes-tecnicas" class="quick-link">Tecnica</a><a href="#forca-semana" class="quick-link">Forca</a><a href="#graficos-semana" class="quick-link">Graficos</a><a href="#tendencias-semana" class="quick-link">Tendencias</a>
+    <a href="#resumo-semana" class="quick-link">Resumo</a><a href="#voto-semanal" class="quick-link">Feedback Aluno</a><a href="#performance-semana" class="quick-link">Performance</a><a href="#wellness-semana" class="quick-link">Wellness</a><a href="#feedback-coach" class="quick-link">Feedback</a><a href="#calendario-provas" class="quick-link">Provas</a><a href="#endurance-semana" class="quick-link">Endurance</a><a href="#recomendacoes-tecnicas" class="quick-link">Tecnica</a><a href="#forca-semana" class="quick-link">Forca</a><a href="#graficos-semana" class="quick-link">Graficos</a><a href="#tendencias-semana" class="quick-link">Tendencias</a>
   </nav>
   <div id="resumo-semana" class="anchor-slot">
   <section class="card section editorial-shell">
@@ -200,6 +200,72 @@ details[open] .caret{transform:rotate(45deg)}
         <ul><li>Proxima prova: Meia Maratona Nike SPCity (26/07/2026).</li><li>Manter consistencia de endurance e preservar recuperacao entre sessoes-chave.</li><li>Priorizar rotina de sono para reduzir fadiga acumulada.</li></ul>
       </div>
     </div>
+  </section></div>
+  <div id="voto-semanal" class="anchor-slot">
+  <section class="card section" style="border-top: 4px solid var(--accent)">
+    <h2 style="margin-bottom:8px">Bio-Feedback Semanal</h2>
+    <p class="section-help" style="margin-bottom:16px">Como você se sente para a próxima semana? Sua percepção é fundamental para o ajuste da periodização.</p>
+    
+    <div id="verdict-container" class="signal-grid" style="grid-template-columns: repeat(3, 1fr); gap: 12px;">
+      <button onclick="sendVerdict('PUSH')" class="verdict-btn" style="background:#16a34a; color:white; border:none; padding:16px 8px; border-radius:12px; font-weight:700; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:20px">🚀</span>
+        <span>PUSH</span>
+        <span style="font-size:10px; font-weight:400; opacity:0.9">Estou ótimo</span>
+      </button>
+      <button onclick="sendVerdict('HOLD')" class="verdict-btn" style="background:#ca8a04; color:white; border:none; padding:16px 8px; border-radius:12px; font-weight:700; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:20px">⚖️</span>
+        <span>HOLD</span>
+        <span style="font-size:10px; font-weight:400; opacity:0.9">No limite</span>
+      </button>
+      <button onclick="sendVerdict('PULL')" class="verdict-btn" style="background:#dc2626; color:white; border:none; padding:16px 8px; border-radius:12px; font-weight:700; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="font-size:20px">⚓</span>
+        <span>PULL</span>
+        <span style="font-size:10px; font-weight:400; opacity:0.9">Cansado</span>
+      </button>
+    </div>
+
+    <div id="verdict-status" class="tg-text-hint" style="margin-top:12px; font-size:12px; text-align:center; display:none">
+      Enviando feedback...
+    </div>
+
+    <script>
+      async function sendVerdict(v) {
+        const btnContainer = document.getElementById('verdict-container');
+        const statusEl = document.getElementById('verdict-status');
+        const btns = document.querySelectorAll('.verdict-btn');
+        
+        btns.forEach(b => { b.disabled = true; b.style.opacity = '0.5'; });
+        statusEl.style.display = 'block';
+        statusEl.textContent = 'Enviando feedback...';
+
+        try {
+          const res = await fetch('https://southamerica-east1-endure-labbs.cloudfunctions.net/setWeeklyVerdict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ athleteKey: 'thais', monday: '2026-05-04', verdict: v })
+          });
+          
+          if (res.ok) {
+            statusEl.textContent = '✅ Feedback recebido! Coach notificado.';
+            statusEl.style.color = '#16a34a';
+            // Marcar o selecionado
+            btns.forEach(b => {
+              if (b.innerText.includes(v)) {
+                b.style.opacity = '1';
+                b.style.ring = '4px solid white';
+                b.style.boxShadow = '0 0 0 4px rgba(0,0,0,0.1)';
+              }
+            });
+          } else {
+            throw new Error('Erro ao enviar');
+          }
+        } catch (e) {
+          statusEl.textContent = '❌ Erro ao enviar. Tente novamente mais tarde.';
+          statusEl.style.color = '#dc2626';
+          btns.forEach(b => { b.disabled = false; b.style.opacity = '1'; });
+        }
+      }
+    </script>
   </section></div>
   <div id="performance-semana" class="anchor-slot">
   <section class="card section">
